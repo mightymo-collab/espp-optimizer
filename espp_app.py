@@ -737,25 +737,32 @@ def main():
         </div>
         ''', unsafe_allow_html=True)
     
-    with col_purchase:
-        highlight_class = 'card-highlight' if purchase_highlighted else ''
-        badge = '<span class="lookback-badge">✓ LOOKBACK</span>' if purchase_highlighted else ''
-        price_class = 'highlight-alt' if purchase_highlighted else ''
-        price_label = 'current' if is_future_purchase else 'close'
-        discount_line = f'<div style="color: var(--accent-alt); font-size: 12px; margin-top: 8px; font-family: Space Mono, monospace;">→ ${purchase["discounted_price"]:.2f} after {discount_rate}% discount</div>' if purchase_highlighted else ''
-        
-        st.markdown(f'''
-        <div class="card {highlight_class}" style="position: relative;">
-            {badge}
-            <div class="label">Purchase Date</div>
-            <div class="medium-number">{purchase_date.strftime("%b %d, %Y")}</div>
-            <div style="margin-top: 8px;">
-                <span class="small-number {price_class}">${purchase_price:,.2f}</span>
-                <span style="color: var(--text-muted); font-size: 14px; margin-left: 8px;">{price_label}</span>
+     with col_purchase:
+        if purchase_highlighted:
+            st.markdown(f'''
+            <div class="card card-highlight" style="position: relative;">
+                <span class="lookback-badge">✓ LOOKBACK</span>
+                <div class="label">Purchase Date</div>
+                <div class="medium-number">{purchase_date.strftime("%b %d, %Y")}</div>
+                <div style="margin-top: 8px;">
+                    <span class="small-number highlight-alt">${purchase_price:,.2f}</span>
+                    <span style="color: var(--text-muted); font-size: 14px; margin-left: 8px;">{"current" if is_future_purchase else "close"}</span>
+                </div>
+                <div style="color: var(--accent-alt); font-size: 12px; margin-top: 8px; font-family: Space Mono, monospace;">→ ${purchase["discounted_price"]:.2f} after {discount_rate}% discount</div>
             </div>
-            {discount_line}
-        </div>
-        ''', unsafe_allow_html=True)
+            ''', unsafe_allow_html=True)
+        else:
+            st.markdown(f'''
+            <div class="card" style="position: relative;">
+                <div class="label">Purchase Date</div>
+                <div class="medium-number">{purchase_date.strftime("%b %d, %Y")}</div>
+                <div style="margin-top: 8px;">
+                    <span class="small-number">${purchase_price:,.2f}</span>
+                    <span style="color: var(--text-muted); font-size: 14px; margin-left: 8px;">{"current" if is_future_purchase else "close"}</span>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+
     
     # ============================================================
     # Purchase Breakdown
