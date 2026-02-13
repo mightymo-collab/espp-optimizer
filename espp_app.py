@@ -737,7 +737,7 @@ def main():
         </div>
         ''', unsafe_allow_html=True)
     
-     with col_purchase:
+    with col_purchase:
         if purchase_highlighted:
             st.markdown(f'''
             <div class="card card-highlight" style="position: relative;">
